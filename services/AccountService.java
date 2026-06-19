@@ -5,10 +5,12 @@ import java.util.Scanner;
 
 import models.Account;
 import repository.AccountRepository;
+import utils.HtmlUtil;
 
 public class AccountService {
     AccountRepository accountRepository = new AccountRepository();
     EmailService emailService = new EmailService();
+    HtmlUtil htmlUtil = new HtmlUtil();
 
     public void createAccount() throws Exception {
         String accountNumberPrefix = "FINBANK";
