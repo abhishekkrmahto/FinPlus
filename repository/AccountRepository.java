@@ -106,6 +106,48 @@ public class AccountRepository {
         return null;
     }
 
+    public Account updateBalance(long id, long newBalance) {
+
+        try {
+
+            initializeDB();
+            Connection connection = db.getConnection();
+
+            String sql = "UPDATE accounts SET balance = ? WHERE account_id = ?";
+            PreparedStatement ps = connection.prepareStatement(sql);
+
+            ps.setLong(1, newBalance);
+            ps.setLong(2, id);
+
+            ps.executeUpdate();
+
+            String sql2 = "SELECT * FROM accounts WHERE account_id = ?";
+            PreparedStatement ps2 = connection.prepareStatement(sql2);
+
+            ps2.setLong(1, id);
+
+            ResultSet rs = ps2.executeQuery();
+
+            if (rs.next()) {
+
+                Account account = new Account();
+
+                account.setAccountId(rs.getLong("account_id"));
+                account.setName(rs.getString("name"));
+                account.setBalance(rs.getLong("balance"));
+                account.setAccountNumber(rs.getString("account_number"));
+                account.setEmail(rs.getString("email"));
+
+                return account;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        return null;
+    }
+
     public HashSet<Account> getAllAccounts() throws Exception {
 
         initializeDB();

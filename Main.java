@@ -12,13 +12,19 @@ public class Main {
         // javac -cp ".;lib\postgresql-42.7.7.jar" Main.java
         // java -cp ".;lib\postgresql-42.7.7.jar" Main
 
+        // for all
+        // javac -cp ".;lib\*" Main.java
+        // java -cp ".;lib\*" Main.java
+
         try {
             connection.connect();
         } catch (Exception e) {
             System.out.println("ERROR WHILE DB CONNECTION");
             return;
         }
-        welcome.welcomeScreen();
+        while (true) {
+            welcome.welcomeScreen();
+        }
 
     }
 }

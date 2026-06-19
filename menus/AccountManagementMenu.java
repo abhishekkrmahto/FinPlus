@@ -6,6 +6,8 @@ import services.AccountService;
 import utils.FastScanner;
 
 public class AccountManagementMenu {
+    AccountService accountService = new AccountService();
+
     static void typeWriter(String text, int delay) throws Exception {
         for (char ch : text.toCharArray()) {
             System.out.print(ch);
@@ -21,13 +23,13 @@ public class AccountManagementMenu {
         typeWriter("1. Create Account", 40);
         typeWriter("2. Search Account", 40);
         typeWriter("3. Loan System", 40);
-        typeWriter("4. Delete Account", 40);
+        typeWriter("4. Add Balance", 40);
+        typeWriter("5. Delete Account", 40);
 
         int input = sc.nextInt();
 
         switch (input) {
             case 1:
-                AccountService accountService = new AccountService();
                 accountService.createAccount();
                 break;
             case 2:
@@ -37,6 +39,9 @@ public class AccountManagementMenu {
                 System.out.println("Under Maintainance");
                 break;
             case 4:
+                accountService.addBalance();
+                break;
+            case 5:
                 System.out.println("Under Maintainance");
                 break;
 
