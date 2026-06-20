@@ -1,18 +1,22 @@
 package services;
 
 import java.util.HashSet;
+import java.util.Random;
 import java.util.Scanner;
 
+import dsa.trees.AccountsAvlTree;
 import models.Account;
 import repository.AccountRepository;
 import utils.HtmlUtil;
 
 public class AccountService {
     AccountRepository accountRepository = new AccountRepository();
+    AccountsAvlTree accountsAvlTree = new AccountsAvlTree();
     EmailService emailService = new EmailService();
     HtmlUtil htmlUtil = new HtmlUtil();
 
     public void createAccount() throws Exception {
+
         String accountNumberPrefix = "FINBANK";
 
         Account account = new Account();
@@ -26,20 +30,47 @@ public class AccountService {
 
         account.setBalance(0);
 
-        HashSet<Account> allAccounts = accountRepository.getAllAccounts();
+        boolean emailExist = accountsAvlTree.emailExistsOrNot(account, accountsAvlTree.root);
+        account.setAccountId(accountsAvlTree.maxId + 1);
+        account.setAccountNumber(accountNumberPrefix + String.valueOf(account.getAccountId()));
 
-        account.setAccountId((allAccounts.size() + 1));// total accounts in table+1
-        account.setAccountNumber((accountNumberPrefix + String.valueOf(account.getAccountId())));
-
-        boolean savedBoolean = accountRepository.saveAccount(account);
-
-        if (savedBoolean) {
-            System.out.println("ACCOUNT SAVED SUCCESSFULLY");
-            emailService.accountCreationSuccessMail(account);
-        } else {
-            System.out.println("ACCOUNT NOT SAVED");
+        if (emailExist) {
+            System.out.println("ACCOUNT NOT SAVED GIVEN EMAIL ALREADY EXISTS");
+            emailService.tryingToRegisterWithExistingEmailMail(account.getEmail());
+            return;
         }
 
+        int attempts = 3;
+
+        while (attempts-- > 0) {
+
+            Random rand = new Random();
+            int otp = 100000 + rand.nextInt(900000);
+
+            emailService.otpMail(account.getEmail(), otp);
+
+            System.out.print("ENTER OTP(sent in your email):- ");
+            int enteredOtp = sc.nextInt();
+
+            if (otp == enteredOtp) {
+
+                account.setAccountNumber(accountNumberPrefix + account.getAccountId());
+
+                boolean savedBoolean = accountRepository.saveAccount(account);
+
+                if (savedBoolean) {
+                    System.out.println("ACCOUNT SAVED SUCCESSFULLY");
+                    System.out.println("Wait.... sending email");
+                    emailService.accountCreationSuccessMail(account);
+                }
+
+                return;
+            }
+
+            System.out.println("Wrong OTP, OTP resent to your gmail");
+        }
+
+        System.out.println("ACCOUNT NOT CREATED. OTP VERIFICATION FAILED.");
     }
 
     public void addBalance() throws Exception {
@@ -47,8 +78,6 @@ public class AccountService {
         System.out.print("ENTER ACCOUNT ID:-");
         long id = sc.nextLong();
         try {
-
-            // yaha par avl tree ka search lagana hai baad mai
             Account account = accountRepository.findByAccountId(id);
             if (account != null) {
                 System.out.print("ENTER AMOUNT:- ");

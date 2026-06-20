@@ -99,4 +99,90 @@ public class EmailService {
 
     }
 
+    public void tryingToRegisterWithExistingEmailMail(String toEmail) {
+
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(fromEmail, password);
+            }
+        });
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(fromEmail));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+            message.setSubject("FinPlus Bank - Anonymous Activity Found");
+
+            Account account = new Account();
+            account.setBalance(000000);
+            account.setAccountNumber("NA");
+            account.setEmail(toEmail);
+            account.setName("Anonymous");
+
+            String htmlText = htmlUtil.templateHTML(account,
+                    "Don't be afraid your data is secure in database, someone is trying to register with your existing email");
+
+            message.setContent(htmlText, "text/html; charset=utf-8");
+
+            Transport.send(message);
+            System.out.println("Success: Email sent successfully");
+
+        } catch (Exception e) {
+            System.out.println("Error: Sending email unsuccessfully.");
+            e.printStackTrace();
+        }
+
+    }
+
+    //
+
+    public void otpMail(String toEmail, int otp) {
+
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(fromEmail, password);
+            }
+        });
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(fromEmail));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+            message.setSubject("FinPlus Bank - OTP Verification");
+
+            Account account = new Account();
+            account.setBalance(000000);
+            account.setAccountNumber("NA");
+            account.setEmail(toEmail);
+            account.setName("Anonymous");
+
+            String htmlText = htmlUtil.otpHTML("Your OTP is:- " + String.valueOf(otp));
+
+            message.setContent(htmlText, "text/html; charset=utf-8");
+
+            Transport.send(message);
+
+        } catch (Exception e) {
+            System.out.println("Error: Sending email unsuccessfully.");
+            e.printStackTrace();
+        }
+
+    }
+
+    //
+
 }

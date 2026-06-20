@@ -2,11 +2,15 @@ package menus;
 
 import java.util.Scanner;
 
+import dataFetching.LoadAllData;
+import dsa.trees.AccountsAvlTree;
+import repository.AccountRepository;
 import services.AccountService;
-import utils.FastScanner;
 
 public class AccountManagementMenu {
+    AccountsAvlTree accountsAvlTree = new AccountsAvlTree();
     AccountService accountService = new AccountService();
+    AccountRepository accountRepository = new AccountRepository();
 
     static void typeWriter(String text, int delay) throws Exception {
         for (char ch : text.toCharArray()) {
@@ -19,6 +23,9 @@ public class AccountManagementMenu {
     static Scanner sc = new Scanner(System.in);
 
     public void accountManagementMenu() throws Exception {
+
+        LoadAllData loadAllData = new LoadAllData();
+        loadAllData.fetchForAvlTree(accountRepository.getAllAccounts());
 
         typeWriter("1. Create Account", 40);
         typeWriter("2. Search Account", 40);
