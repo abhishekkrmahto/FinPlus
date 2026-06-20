@@ -83,8 +83,29 @@ public class AccountService {
                 System.out.print("ENTER AMOUNT:- ");
                 long amount = sc.nextLong();
                 long newBalance = account.getBalance() + amount;
-                account = accountRepository.updateBalance(id, newBalance);
-                emailService.balanceAddedSuccessfullyMail(account);
+                int attempts = 3;
+                while (attempts-- > 0) {
+
+                    Random rand = new Random();
+                    int otp = 100000 + rand.nextInt(900000);
+
+                    emailService.otpMail(account.getEmail(), otp);
+
+                    System.out.print("ENTER OTP(sent in your email):- ");
+                    int enteredOtp = sc.nextInt();
+
+                    if (otp == enteredOtp) {
+                        account = accountRepository.updateBalance(id, newBalance);
+                        emailService.balanceAddedSuccessfullyMail(account);
+                        System.out.println("Balance Updated !!");
+                        return;
+                    }
+
+                    System.out.println("Wrong OTP, OTP resent to your gmail");
+                }
+            } else {
+                System.out.println("Account not found !!");
+                return;
             }
         } catch (Exception e) {
             System.out.println("ERROR WHILE ADDING BALANCE");
