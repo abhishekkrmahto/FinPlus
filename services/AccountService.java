@@ -1,10 +1,13 @@
 package services;
 
+
 import java.util.Random;
 import java.util.Scanner;
 
+import dsa.graphs.TransactionGraph;
 import dsa.trees.AccountsAvlTree;
 import models.Account;
+
 import repository.AccountRepository;
 import utils.HtmlUtil;
 
@@ -12,7 +15,10 @@ public class AccountService {
     AccountRepository accountRepository = new AccountRepository();
     AccountsAvlTree accountsAvlTree = new AccountsAvlTree();
     EmailService emailService = new EmailService();
+    TransactionGraph transactionGraph = new TransactionGraph();
     HtmlUtil htmlUtil = new HtmlUtil();
+    Scanner sc = new Scanner(System.in);
+    Random random = new Random();
 
     public void createAccount() throws Exception {
 
@@ -58,6 +64,7 @@ public class AccountService {
                 boolean savedBoolean = accountRepository.saveAccount(account);
 
                 if (savedBoolean) {
+                    accountsAvlTree.insertAccount(accountsAvlTree.root, account);
                     System.out.println("ACCOUNT SAVED SUCCESSFULLY");
                     System.out.println("Wait.... sending email");
                     emailService.accountCreationSuccessMail(account);

@@ -1,33 +1,26 @@
 package models;
 
+import java.sql.Timestamp;
 import java.time.LocalDateTime;
 
 public class Transaction {
 
     private long transactionId;
-
-    private String senderAccountNumber;
-
-    private String receiverAccountNumber;
-
+    private long senderAccountNumber;
+    private long receiverAccountNumber;
     private long amount;
-
     private LocalDateTime timestamp;
+    private String transactionIdString;
 
-    public Transaction() {
+    public String getTransactionIdString() {
+        return transactionIdString;
     }
 
-    public Transaction(long transactionId,
-            String senderAccountNumber,
-            String receiverAccountNumber,
-            long amount,
-            LocalDateTime timestamp) {
+    public void setTransactionIdString(String transactionIdString) {
+        this.transactionIdString = transactionIdString;
+    }
 
-        this.transactionId = transactionId;
-        this.senderAccountNumber = senderAccountNumber;
-        this.receiverAccountNumber = receiverAccountNumber;
-        this.amount = amount;
-        this.timestamp = timestamp;
+    public Transaction() {
     }
 
     public long getTransactionId() {
@@ -36,22 +29,6 @@ public class Transaction {
 
     public void setTransactionId(long transactionId) {
         this.transactionId = transactionId;
-    }
-
-    public String getSenderAccountNumber() {
-        return senderAccountNumber;
-    }
-
-    public void setSenderAccountNumber(String senderAccountNumber) {
-        this.senderAccountNumber = senderAccountNumber;
-    }
-
-    public String getReceiverAccountNumber() {
-        return receiverAccountNumber;
-    }
-
-    public void setReceiverAccountNumber(String receiverAccountNumber) {
-        this.receiverAccountNumber = receiverAccountNumber;
     }
 
     public long getAmount() {
@@ -68,5 +45,21 @@ public class Transaction {
 
     public void setTimestamp(LocalDateTime timestamp) {
         this.timestamp = timestamp;
+    }
+
+    public long getSenderAccountNumber() {
+        return senderAccountNumber;
+    }
+
+    public void setSenderAccountNumber(long senderAccountNumber) {
+        this.senderAccountNumber = senderAccountNumber;
+    }
+
+    public long getReceiverAccountNumber() {
+        return receiverAccountNumber;
+    }
+
+    public void setReceiverAccountNumber(long receiverAccountNumber) {
+        this.receiverAccountNumber = receiverAccountNumber;
     }
 }

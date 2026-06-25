@@ -185,4 +185,76 @@ public class EmailService {
 
     //
 
+    public void creditBalance(String toEmail, long amount, String transactionIdString) {
+
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(fromEmail, password);
+            }
+        });
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(fromEmail));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+            message.setSubject("FinPlus Bank - OTP Verification");
+
+            String htmlText = htmlUtil
+                    .otpHTML("Amount credited to your account Successfully 😊 ,AMOUNT = " + amount + "\n"
+                            + "Transaction id:- " + transactionIdString);
+
+            message.setContent(htmlText, "text/html; charset=utf-8");
+
+            Transport.send(message);
+
+        } catch (Exception e) {
+            System.out.println("Error: Sending email unsuccessfully.");
+            e.printStackTrace();
+        }
+
+    }
+
+    public void debitBalance(String toEmail, long amount, String transactionIdString) {
+
+        Properties properties = new Properties();
+        properties.put("mail.smtp.host", "smtp.gmail.com");
+        properties.put("mail.smtp.port", "587");
+        properties.put("mail.smtp.auth", "true");
+        properties.put("mail.smtp.starttls.enable", "true");
+
+        Session session = Session.getInstance(properties, new Authenticator() {
+            @Override
+            protected PasswordAuthentication getPasswordAuthentication() {
+                return new PasswordAuthentication(fromEmail, password);
+            }
+        });
+
+        try {
+            MimeMessage message = new MimeMessage(session);
+            message.setFrom(new InternetAddress(fromEmail));
+            message.addRecipient(Message.RecipientType.TO, new InternetAddress(toEmail));
+            message.setSubject("FinPlus Bank - OTP Verification");
+
+            String htmlText = htmlUtil
+                    .otpHTML("Amount debited to your account Successfully 😊 ,AMOUNT = " + amount + "\n"
+                            + "Transaction id:- " + transactionIdString);
+
+            message.setContent(htmlText, "text/html; charset=utf-8");
+
+            Transport.send(message);
+
+        } catch (Exception e) {
+            System.out.println("Error: Sending email unsuccessfully.");
+            e.printStackTrace();
+        }
+
+    }
+
 }

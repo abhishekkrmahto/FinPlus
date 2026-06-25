@@ -150,4 +150,26 @@ public class AccountsAvlTree {
             maxId = Math.max(maxId, account.getAccountId());
         }
     }
+
+    public Account findByAccountId(Node root, long id) {
+        if (root == null) {
+            return null;
+        }
+        if (root.account == null) {
+            return null;
+        }
+
+        long currentId = root.account.getAccountId();
+
+        if (currentId == id) {
+            return root.account;
+        }
+
+        if (id < currentId) {
+            return findByAccountId(root.left, id);
+        } else {
+            return findByAccountId(root.right, id);
+        }
+    }
+
 }

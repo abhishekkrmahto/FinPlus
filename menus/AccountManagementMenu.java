@@ -23,10 +23,6 @@ public class AccountManagementMenu {
     static Scanner sc = new Scanner(System.in);
 
     public void accountManagementMenu() throws Exception {
-
-        LoadAllData loadAllData = new LoadAllData();
-        loadAllData.fetchForAvlTree(accountRepository.getAllAccounts());
-
         typeWriter("1. Create Account", 40);
         typeWriter("2. Search Account", 40);
         typeWriter("3. Loan System", 40);

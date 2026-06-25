@@ -29,7 +29,6 @@ public class Welcome {
         System.out.println();
 
         mainMenu.mainMenu();
-
-        System.out.println("\n==============================================");
+        System.out.println();
     }
 }
