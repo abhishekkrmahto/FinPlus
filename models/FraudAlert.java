@@ -2,34 +2,27 @@ package models;
 
 public class FraudAlert {
 
-    private long alertId;
-
     private long transactionId;
-
-    private String reason;
+    private long accountId;
 
     private int riskScore;
 
     public FraudAlert() {
     }
 
-    public FraudAlert(long alertId,
+    public FraudAlert(
             long transactionId,
-            String reason,
             int riskScore) {
-
-        this.alertId = alertId;
         this.transactionId = transactionId;
-        this.reason = reason;
         this.riskScore = riskScore;
     }
 
-    public long getAlertId() {
-        return alertId;
+    public long getAccountId() {
+        return accountId;
     }
 
-    public void setAlertId(long alertId) {
-        this.alertId = alertId;
+    public void setAccountId(long accountId) {
+        this.accountId = accountId;
     }
 
     public long getTransactionId() {
@@ -38,14 +31,6 @@ public class FraudAlert {
 
     public void setTransactionId(long transactionId) {
         this.transactionId = transactionId;
-    }
-
-    public String getReason() {
-        return reason;
-    }
-
-    public void setReason(String reason) {
-        this.reason = reason;
     }
 
     public int getRiskScore() {
